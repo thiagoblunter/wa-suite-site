@@ -31,11 +31,19 @@
     <input type="email" id="email" class="form-control mb-3" placeholder="Email">
     <input type="password" id="senha" class="form-control mb-3" placeholder="Senha">
     <button class="btn btn-primary w-100" onclick="login()">Entrar</button>
+
+    <hr>
+    <h5 class="text-center mt-4">Novo por aqui?</h5>
+    <input type="email" id="novoEmail" class="form-control mb-2" placeholder="Novo Email">
+    <input type="password" id="novaSenha" class="form-control mb-2" placeholder="Nova Senha">
+    <button class="btn btn-outline-primary w-100" onclick="cadastrar()">Cadastrar</button>
+
     <div id="erro" class="text-danger mt-3 text-center" style="display:none;">Email ou senha inválidos</div>
+    <div id="sucesso" class="text-success mt-3 text-center" style="display:none;">Cadastro realizado com sucesso!</div>
   </div>
 
   <script>
-    const usuarios = [
+    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [
       { email: "admin@wasuite.com", senha: "123456", uid: "admin001" },
       { email: "thiago@mobileon.com", senha: "mobileon", uid: "thiago001" }
     ];
@@ -51,6 +59,17 @@
       } else {
         document.getElementById("erro").style.display = "block";
       }
+    }
+
+    function cadastrar() {
+      const novoEmail = document.getElementById("novoEmail").value;
+      const novaSenha = document.getElementById("novaSenha").value;
+      if (!novoEmail || !novaSenha) return alert("Preencha os campos de cadastro");
+      const uid = "uid_" + Date.now();
+      usuarios.push({ email: novoEmail, senha: novaSenha, uid });
+      localStorage.setItem("usuarios", JSON.stringify(usuarios));
+      document.getElementById("sucesso").style.display = "block";
+      setTimeout(() => document.getElementById("sucesso").style.display = "none", 3000);
     }
   </script>
 </body>
